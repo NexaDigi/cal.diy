@@ -47,14 +47,7 @@ export const OnboardingContinuationPrompt = () => {
   }
 
   const handleContinue = () => {
-    // Navigate to the next step based on plan type
-    if (entityType === "organization") {
-      // Organization flow: details -> brand -> teams -> invite
-      router.push("/onboarding/organization/brand");
-    } else if (entityType === "team") {
-      // Team flow: details -> invite
-      router.push("/onboarding/teams/invite");
-    }
+    router.push("/onboarding/personal/settings");
   };
 
   const handleStartOver = () => {

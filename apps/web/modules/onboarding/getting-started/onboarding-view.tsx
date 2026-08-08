@@ -75,11 +75,7 @@ export const OnboardingView = ({ userEmail }: OnboardingViewProps) => {
       });
     }
     startTransition(() => {
-      if (selectedPlan === "organization") {
-        router.push("/onboarding/organization/details");
-      } else if (selectedPlan === "team") {
-        router.push("/onboarding/teams/details");
-      } else if (selectedPlan === "personal") {
+      if (selectedPlan === "personal" || selectedPlan === "team" || selectedPlan === "organization") {
         router.push("/onboarding/personal/settings");
       }
     });

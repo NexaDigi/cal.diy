@@ -100,13 +100,11 @@ export const useSubmitOnboarding = () => {
         ...(options?.billingPeriod && { billingPeriod: options.billingPeriod }),
       });
 
-      // If there's a checkout URL, redirect to Stripe (billing enabled flow)
       if (result?.checkoutUrl) {
-        window.location.href = result?.checkoutUrl;
-        return;
+        throw new Error("Nexa Agenda self-hosted does not charge per user or team.");
       }
 
-      // No checkout URL means billing is disabled (self-hosted flow)
+      // Nexa Agenda self-hosted is distributed without per-user or per-team billing.
       // Organization has already been created by the backend
       showToast("Organization created successfully!", "success");
       // Set flag to show welcome modal after redirect
