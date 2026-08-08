@@ -1,7 +1,7 @@
 "use client";
 
 import { ErrorCode } from "@calcom/features/auth/lib/ErrorCode";
-import { HOSTED_CAL_FEATURES, WEBAPP_URL, WEBSITE_URL } from "@calcom/lib/constants";
+import { HOSTED_CAL_FEATURES, WEBAPP_URL } from "@calcom/lib/constants";
 import { emailRegex } from "@calcom/lib/emailSchema";
 import { getSafeRedirectUrl } from "@calcom/lib/getSafeRedirectUrl";
 import { useCompatSearchParams } from "@calcom/lib/hooks/useCompatSearchParams";
@@ -21,7 +21,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { inferSSRProps } from "@lib/types/inferSSRProps";
 import type { getServerSideProps } from "@server/lib/auth/login/getServerSideProps";
 import { Eye, EyeOff } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -171,9 +170,6 @@ export default function Login({
   };
 
   const showSocialLogin = isGoogleLoginEnabled || isOutlookLoginEnabled;
-  const showSignupLink =
-    process.env.NEXT_PUBLIC_DISABLE_SIGNUP !== "true" && searchParams?.get("register") !== "false";
-
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-default/80 px-4 py-10">
       <BackgroundGrid />
@@ -183,7 +179,7 @@ export default function Login({
         <div className="w-full rounded-xl border border-subtle bg-default p-10 shadow-sm">
           {/* Logo */}
           <div className="mb-2 text-center">
-            <h1 className="font-cal text-xl font-bold text-emphasis">Cal.diy</h1>
+            <img src="/api/logo" alt="Nexa Agenda" className="mx-auto h-8 w-auto" />
           </div>
 
           {/* Heading */}
@@ -365,22 +361,6 @@ export default function Login({
           </FormProvider>
         </div>
 
-        {/* Footer Links */}
-        {!twoFactorRequired && (
-          <div className="mt-6 flex items-center justify-center gap-4 text-center">
-            {showSignupLink && (
-              <Link
-                href={
-                  callbackUrl
-                    ? `${WEBSITE_URL}/signup?redirect=${encodeURIComponent(callbackUrl)}`
-                    : `${WEBSITE_URL}/signup`
-                }
-                className="text-sm font-medium text-emphasis hover:underline">
-                {t("create_account")}
-              </Link>
-            )}
-          </div>
-        )}
       </div>
 
       <AddToHomescreen />
