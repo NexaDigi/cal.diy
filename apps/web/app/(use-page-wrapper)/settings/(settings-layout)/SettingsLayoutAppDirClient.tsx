@@ -198,6 +198,11 @@ const getTabs = (
           trackingMetadata: { section: "admin", page: "features" },
         },
         {
+          name: "license",
+          href: "/auth/setup?step=1",
+          trackingMetadata: { section: "admin", page: "license" },
+        },
+        {
           name: "apps",
           href: "/settings/admin/apps/calendar",
           trackingMetadata: { section: "admin", page: "apps" },
@@ -309,7 +314,21 @@ const useTabs = ({
             });
           }
 
+          if (permissions?.canViewOrganizationBilling) {
+            newArray.push({
+              name: "billing",
+              href: "/settings/organizations/billing",
+              trackingMetadata: { section: "organization", page: "billing" },
+            });
+          }
         } else {
+          if (permissions?.canUpdateOrganization) {
+            newArray.push({
+              name: "billing",
+              href: "/settings/organizations/billing",
+              trackingMetadata: { section: "organization", page: "billing" },
+            });
+          }
           // Show roles page (modal will appear if PBAC not enabled)
           if (permissions?.canUpdateOrganization) {
             newArray.push({

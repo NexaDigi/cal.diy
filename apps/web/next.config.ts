@@ -15,6 +15,12 @@ import { TRIGGER_VERSION } from "./trigger.version"; // adjust path as needed
 
 dotenvConfig({ path: "../../.env" });
 
+if (process.env.NEXA_LOCAL_DEVELOPMENT === "1") {
+  const envMutable = process.env as Record<string, string | undefined>;
+  envMutable.NEXT_PUBLIC_WEBAPP_URL = "http://localhost:3010";
+  envMutable.NEXTAUTH_URL = "http://localhost:3010";
+}
+
 const { version } = packageJson;
 const {
   i18n: { locales },
@@ -223,6 +229,14 @@ const nextConfig = (phase: string): NextConfig => {
 
   return {
     output: process.env.BUILD_STANDALONE === "true" ? "standalone" : undefined,
+    distDir: process.env.NEXA_LOCAL_DEVELOPMENT === "1" ? ".next-nexa-local" : ".next",
+    env:
+      process.env.NEXA_LOCAL_DEVELOPMENT === "1"
+        ? {
+            NEXT_PUBLIC_WEBAPP_URL: "http://localhost:3010",
+            NEXT_PUBLIC_WEBSITE_URL: "http://localhost:3010",
+          }
+        : undefined,
     serverExternalPackages: [
       "deasync",
       "http-cookie-agent",

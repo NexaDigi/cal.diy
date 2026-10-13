@@ -1,7 +1,7 @@
 "use client";
 
 import { ErrorCode } from "@calcom/features/auth/lib/ErrorCode";
-import { HOSTED_CAL_FEATURES, WEBAPP_URL } from "@calcom/lib/constants";
+import { APP_NAME, HOSTED_CAL_FEATURES, WEBAPP_URL } from "@calcom/lib/constants";
 import { emailRegex } from "@calcom/lib/emailSchema";
 import { getSafeRedirectUrl } from "@calcom/lib/getSafeRedirectUrl";
 import { useCompatSearchParams } from "@calcom/lib/hooks/useCompatSearchParams";
@@ -127,6 +127,7 @@ export default function Login({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [lastUsed, setLastUsed] = useLastUsed();
   const [showPassword, setShowPassword] = useState(false);
+  const currentOrigin = typeof window === "undefined" ? WEBAPP_URL : window.location.origin;
 
   const errorMessages: { [key: string]: string } = {
     // [ErrorCode.SecondFactorRequired]: t("2fa_enabled_instructions"),
@@ -143,7 +144,7 @@ export default function Login({
 
   // If not absolute URL, make it absolute
   if (!/^https?:\/\//.test(callbackUrl)) {
-    callbackUrl = `${WEBAPP_URL}/${callbackUrl}`;
+    callbackUrl = `${currentOrigin}/${callbackUrl}`;
   }
 
   const safeCallbackUrl = getSafeRedirectUrl(callbackUrl);
@@ -171,6 +172,9 @@ export default function Login({
   };
 
   const showSocialLogin = isGoogleLoginEnabled || isOutlookLoginEnabled;
+  const showSignupLink =
+    process.env.NEXT_PUBLIC_DISABLE_SIGNUP !== "true" && searchParams?.get("register") !== "false";
+
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-default/80 px-4 py-10">
       <BackgroundGrid />
@@ -180,7 +184,7 @@ export default function Login({
         <div className="w-full rounded-xl border border-subtle bg-default p-10 shadow-sm">
           {/* Logo */}
           <div className="mb-2 text-center">
-            <img src="/api/logo" alt="Nexa Agenda" className="mx-auto h-8 w-auto" />
+            <h1 className="font-cal text-xl font-bold text-emphasis">{APP_NAME}</h1>
           </div>
 
           {/* Heading */}
@@ -362,6 +366,22 @@ export default function Login({
           </FormProvider>
         </div>
 
+        {/* Footer Links */}
+        {!twoFactorRequired && (
+          <div className="mt-6 flex items-center justify-center gap-4 text-center">
+            {showSignupLink && (
+              <Link
+                href={
+                  callbackUrl
+                    ? `/signup?redirect=${encodeURIComponent(callbackUrl)}`
+                    : "/signup"
+                }
+                className="text-sm font-medium text-emphasis hover:underline">
+                {t("create_account")}
+              </Link>
+            )}
+          </div>
+        )}
       </div>
 
       <AddToHomescreen />

@@ -1,0 +1,43 @@
+services:
+  calcom_app:
+    image: ghcr.io/nexadigi/cal-diy:${CALCOM_IMAGE_TAG}
+    networks:
+      - nexa
+    environment:
+      - NODE_ENV=production
+      - TZ=America/Sao_Paulo
+      - CALCOM_TELEMETRY_DISABLED=1
+      - NEXT_PUBLIC_WEBAPP_URL=https://calendario.nexadigi.com.br
+      - NEXTAUTH_URL=https://calendario.nexadigi.com.br
+      - NEXT_PUBLIC_CONSOLE_URL=https://calendario.nexadigi.com.br
+      - NEXT_PUBLIC_WEBSITE_URL=https://calendario.nexadigi.com.br
+      # This fork permits self-registration so client companies can add staff.
+      # Billing is handled by Nexa installation/support, not by user seats.
+      - NEXT_PUBLIC_DISABLE_SIGNUP=false
+      - ALLOWED_HOSTNAMES="nexadigi.com.br"
+      # Secrets and database values must be copied from the current Portainer stack or Docker secrets.
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_DIRECT_URL=${DATABASE_DIRECT_URL}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - CALENDSO_ENCRYPTION_KEY=${CALENDSO_ENCRYPTION_KEY}
+      - EMAIL_FROM=${EMAIL_FROM}
+      - EMAIL_SERVER_HOST=${EMAIL_SERVER_HOST}
+      - EMAIL_SERVER_PORT=${EMAIL_SERVER_PORT}
+      - EMAIL_SERVER_USER=${EMAIL_SERVER_USER}
+      - EMAIL_SERVER_PASSWORD=${EMAIL_SERVER_PASSWORD}
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.calcom_app.rule=Host(`calendario.nexadigi.com.br`) && PathPrefix(`/`)
+        - traefik.http.routers.calcom_app.entrypoints=websecure
+        - traefik.http.routers.calcom_app.priority=1
+        - traefik.http.routers.calcom_app.tls.certresolver=letsencryptresolver
+        - traefik.http.routers.calcom_app.service=calcom_app
+        - traefik.http.services.calcom_app.loadbalancer.server.port=3000
+        - traefik.http.services.calcom_app.loadbalancer.passHostHeader=1
+
+networks:
+  nexa:
+    external: true

@@ -1,12 +1,11 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
-
 import dayjs from "@calcom/dayjs";
 import { useFlagMap } from "@calcom/features/flags/context/provider";
 import type { User } from "@calcom/prisma/client";
 import useMeQuery from "@calcom/trpc/react/hooks/useMeQuery";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const shouldShowOnboarding = (
   user: Pick<User, "createdDate" | "completedOnboarding"> & {
@@ -39,8 +38,12 @@ export function useRedirectToOnboardingIfNeeded() {
     !user?.emailVerified && user?.identityProvider === "CAL" && flags["email-verification"];
 
   const shouldRedirectToOnboarding = user && shouldShowOnboarding(user);
-  // Don't redirect if already on an onboarding page (works for both old [[...step]] and v3 flows)
-  const isOnOnboardingPage = pathname?.startsWith("/onboarding/") || pathname?.startsWith("/getting-started");
+  // Teams are a valid first step for the Nexa self-hosted flow. The user still completes
+  // personal onboarding before using scheduling pages such as event types.
+  const isOnOnboardingPage =
+    pathname?.startsWith("/onboarding/") ||
+    pathname?.startsWith("/getting-started") ||
+    pathname?.startsWith("/teams");
   const canRedirect =
     !isLoading && shouldRedirectToOnboarding && !needsEmailVerification && !isOnOnboardingPage;
 

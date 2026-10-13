@@ -192,8 +192,8 @@ export default function JoinCall(props: PageProps) {
         ) : (
           <img
             className="fixed z-10 hidden h-5 sm:inline-block"
-            src={`${WEBSITE_URL}/cal-logo-word-dark.svg`}
-            alt="Logo"
+            src={`${WEBSITE_URL}/nexa-logo-black.svg`}
+            alt="Nexa Agenda"
             style={{
               top: 47,
               left: 20,

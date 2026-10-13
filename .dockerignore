@@ -1,10 +1,14 @@
 # Dependencies
 node_modules
 **/node_modules
+.yarn/cache
+**/.yarn/cache
 
 # Build outputs
 .next
 **/.next
+**/.next*
+**/.open-next
 dist
 **/dist
 build
@@ -20,6 +24,7 @@ coverage
 test-results
 **/test-results
 .turbo
+**/.turbo
 **/.turbo
 
 # Logs

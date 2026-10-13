@@ -42,7 +42,9 @@ COPY packages ./packages
 
 RUN yarn config set httpTimeout 1200000
 RUN npx turbo prune --scope=@calcom/web --scope=@calcom/trpc --docker
-RUN yarn install
+# Package postinstall scripts include an obsolete Prisma engine that fails in this
+# snapshot; the application build generates the runtime Prisma artifacts itself.
+RUN yarn install --mode=skip-build
 # Build and make embed servable from web/public/embed folder
 RUN yarn workspace @calcom/trpc run build
 RUN yarn --cwd packages/embeds/embed-core workspace @calcom/embed-core run build

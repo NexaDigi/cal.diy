@@ -178,6 +178,14 @@ const KBAR_ACTION_CONFIGS: ActionConfig[] = [
     href: "/settings/security/impersonation",
   },
   {
+    id: "license",
+    name: "choose_a_license",
+    section: "admin",
+    shortcut: ["u", "l"],
+    keywords: "license",
+    href: "/auth/setup?step=1",
+  },
+  {
     id: "webhooks",
     name: "Webhooks",
     section: "developer",
@@ -192,6 +200,14 @@ const KBAR_ACTION_CONFIGS: ActionConfig[] = [
     shortcut: ["a", "p", "i"],
     keywords: "api keys",
     href: "/settings/developer/api-keys",
+  },
+  {
+    id: "billing",
+    name: "manage_billing",
+    section: "billing",
+    shortcut: ["m", "b"],
+    keywords: "billing view manage",
+    href: "/settings/billing",
   },
 ];
 

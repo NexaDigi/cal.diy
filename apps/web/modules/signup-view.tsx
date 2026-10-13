@@ -293,15 +293,23 @@ export default function Signup({
 
       const gettingStartedPath = onboardingV3Enabled ? "onboarding/getting-started" : "getting-started";
       const verifyOrGettingStarted = emailVerificationEnabled ? "auth/verify-email" : gettingStartedPath;
-      const constructCallBackIfUrlPresent = () => {
-        if (isOrgInviteByLink) {
-          return `${WEBAPP_URL}/${searchParams.get("callbackUrl")}`;
-        }
-        return addOrUpdateQueryParam(`${WEBAPP_URL}/${searchParams.get("callbackUrl")}`, "from", "signup");
+      const currentOrigin = window.location.origin;
+      const constructCallBackIfUrlNotPresent = () => {
+        return `${currentOrigin}/${verifyOrGettingStarted}?from=signup`;
       };
 
-      const constructCallBackIfUrlNotPresent = () => {
-        return `${WEBAPP_URL}/${verifyOrGettingStarted}?from=signup`;
+      const constructCallBackIfUrlPresent = () => {
+        const callbackUrl = new URL(searchParams.get("callbackUrl") ?? "/", currentOrigin);
+
+        // Keep a local signup flow on its current instance instead of following another local workspace.
+        if (callbackUrl.origin !== currentOrigin) {
+          return constructCallBackIfUrlNotPresent();
+        }
+
+        if (isOrgInviteByLink) {
+          return callbackUrl.toString();
+        }
+        return addOrUpdateQueryParam(callbackUrl.toString(), "from", "signup");
       };
 
       const constructCallBackUrl = () => {
@@ -779,7 +787,7 @@ export default function Signup({
                     <img
                       src="/product-cards/product-of-the-day.svg"
                       className="h-[34px] w-full dark:invert"
-                      alt="Cal.diy was Product of the Day at ProductHunt"
+                      alt="Nexa Agenda was Product of the Day at ProductHunt"
                     />
                   </div>
                   <div>
@@ -787,7 +795,7 @@ export default function Signup({
                     <img
                       src="/product-cards/product-of-the-week.svg"
                       className="h-[34px] w-full dark:invert"
-                      alt="Cal.diy was Product of the Week at ProductHunt"
+                      alt="Nexa Agenda was Product of the Week at ProductHunt"
                     />
                   </div>
                   <div>
@@ -795,7 +803,7 @@ export default function Signup({
                     <img
                       src="/product-cards/product-of-the-month.svg"
                       className="h-[34px] w-full dark:invert"
-                      alt="Cal.diy was Product of the Month at ProductHunt"
+                      alt="Nexa Agenda was Product of the Month at ProductHunt"
                     />
                   </div>
                 </div>
@@ -828,12 +836,12 @@ export default function Signup({
               </>
             )}
             <div className="hidden rounded-tl-2xl rounded-br-none rounded-bl-2xl border border-default border-r-0 border-dashed bg-black/3 lg:block lg:py-[6px] lg:pl-[6px] dark:bg-white/5">
-              <img className="block dark:hidden" src="/mock-event-type-list.svg" alt="Cal.diy Booking Page" />
+              <img className="block dark:hidden" src="/mock-event-type-list.svg" alt="Nexa Agenda booking page" />
               {/* eslint-disable @next/next/no-img-element */}
               <img
                 className="hidden dark:block"
                 src="/mock-event-type-list-dark.svg"
-                alt="Cal.diy Booking Page"
+                alt="Nexa Agenda booking page"
               />
             </div>
             <div className="mt-8 mr-12 hidden h-full w-full grid-cols-3 gap-4 overflow-hidden lg:grid">

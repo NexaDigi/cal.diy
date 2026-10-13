@@ -75,7 +75,11 @@ export const OnboardingView = ({ userEmail }: OnboardingViewProps) => {
       });
     }
     startTransition(() => {
-      if (selectedPlan === "personal" || selectedPlan === "team" || selectedPlan === "organization") {
+      if (selectedPlan === "organization") {
+        router.push("/onboarding/organization/details");
+      } else if (selectedPlan === "team") {
+        router.push("/teams");
+      } else if (selectedPlan === "personal") {
         router.push("/onboarding/personal/settings");
       }
     });
@@ -99,7 +103,7 @@ export const OnboardingView = ({ userEmail }: OnboardingViewProps) => {
     {
       id: "team" as PlanType,
       title: t("onboarding_plan_team_title"),
-      badge: t("onboarding_plan_team_badge"),
+      badge: t("free"),
       description: t("onboarding_plan_team_description"),
       icon: planIconByType.team,
       variant: "team" as const,

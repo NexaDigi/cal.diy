@@ -1,7 +1,7 @@
 {
     "name": "Nexa Agenda",
     "short_name": "Nexa Agenda",
-    "description": "Agenda online da Nexa Comunicação.",
+    "description": "Scheduling infrastructure for absolutely everyone.",
     "icons": [
         {
             "src": "/api/logo?type=android-chrome-192",

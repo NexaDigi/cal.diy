@@ -2,7 +2,11 @@
 
 # .env file
 .env
-!packages/prisma/.env
+
+# Nexa local credentials and development outputs
+gh.env
+**/.next-nexa-local*/
+*.log
 
 # dependencies
 node_modules
