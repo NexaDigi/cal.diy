@@ -165,7 +165,9 @@ const Page = async ({ searchParams }: PageProps) => {
                             <td className="px-5 py-3 text-default">{member.user.email || "Sem e-mail"}</td>
                             <td className="px-5 py-3">
                               {isOwner && !isTeamOwner ? (
-                                <form action={updateMemberRole as unknown as string} className="flex items-center gap-2">
+                                <form
+                                  action={updateMemberRole as unknown as string}
+                                  className="flex items-center gap-2">
                                   <input name="teamId" type="hidden" value={team.id} />
                                   <input name="membershipId" type="hidden" value={member.id} />
                                   <select

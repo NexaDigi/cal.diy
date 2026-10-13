@@ -1,5 +1,6 @@
 "use client";
 
+import process from "node:process";
 import { ErrorCode } from "@calcom/features/auth/lib/ErrorCode";
 import { APP_NAME, HOSTED_CAL_FEATURES, WEBAPP_URL } from "@calcom/lib/constants";
 import { emailRegex } from "@calcom/lib/emailSchema";
@@ -36,13 +37,9 @@ interface LoginValues {
   csrfToken: string;
 }
 
-const MicrosoftIcon = () => (
-  <img className="size-4" src="/microsoft-logo.svg" alt="" />
-);
+const MicrosoftIcon = () => <img className="size-4" src="/microsoft-logo.svg" alt="" />;
 
-const GoogleIcon = () => (
-  <img className="size-4" src="/google-icon-colored.svg" alt="" />
-);
+const GoogleIcon = () => <img className="size-4" src="/google-icon-colored.svg" alt="" />;
 
 function BackgroundGrid() {
   const rows = 9;
@@ -371,11 +368,7 @@ export default function Login({
           <div className="mt-6 flex items-center justify-center gap-4 text-center">
             {showSignupLink && (
               <Link
-                href={
-                  callbackUrl
-                    ? `/signup?redirect=${encodeURIComponent(callbackUrl)}`
-                    : "/signup"
-                }
+                href={callbackUrl ? `/signup?redirect=${encodeURIComponent(callbackUrl)}` : "/signup"}
                 className="text-sm font-medium text-emphasis hover:underline">
                 {t("create_account")}
               </Link>

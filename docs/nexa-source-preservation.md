@@ -22,9 +22,26 @@ Validation on preservation:
   Dependencies had been removed during the approved local cleanup.
 - Existing whitespace warnings in getReplyToHeader.ts and its test were retained.
 
-This is an archive branch, not a new validated release. Run dependency
-installation, lint, type checks and relevant tests before integrating changes
-into main or building a new release.
+## Validation before integration (2026-10-13)
+
+The published source was extracted into disposable containers based on the
+existing nexadigi/cal-diy:0.0.3 image, using its installed dependencies and
+generated Prisma types. No private local configuration files were included.
+
+- Direct web TypeScript check passed: tsc --noEmit --pretty false.
+- Biome checked 29 changed non-generated TypeScript files without errors after
+  safe formatting/import fixes. Existing warnings remain.
+- Eight getReplyToHeader tests and four AdminPasswordBanner tests passed with
+  NODE_ENV=test and an isolated temporary jsdom setup.
+- The standard test setup failed before test collection with a node: built-in
+  module resolution error. The isolated setup did not modify the test cases.
+- The full Turbo type-check command was attempted but stopped at Prisma's
+  engine download in the network-isolated container.
+- The existing manual Nexa build workflow from main was restored unchanged.
+
+These checks do not constitute a clean dependency installation, a complete
+monorepo test suite, a new Docker build or end-to-end team management validation.
+No new release or VPS deployment was performed during this integration.
 
 The accompanying Swarm template uses environment variable placeholders.
 Deployment requires separately stored database, authentication, SMTP and Google
